@@ -1,0 +1,6 @@
+@BogeyGolfersWeb_HostAddress = http://localhost:5135
+
+GET {{BogeyGolfersWeb_HostAddress}}/bogeygolfers/
+Accept: application/json
+
+###
