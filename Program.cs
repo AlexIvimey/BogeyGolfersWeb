@@ -1,4 +1,6 @@
 using BogeyGolfersWeb.Context;
+using BogeyGolfersWeb.models;
+using BogeyGolfersWeb.Seeders;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,5 +24,14 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+// Seed startup data
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<BogeyGolfersDbContext>();
+
+    await db.Database.MigrateAsync();
+    await RolesSeeder.SeedRolesAsync(db);
+    await UserSeeder.SeedUserAsync(db);
+}
 
 app.Run();

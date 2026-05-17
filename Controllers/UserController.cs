@@ -20,7 +20,7 @@ namespace BogeyGolfersWeb.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return _context.Users;
+            return _context.Users.Include(u => u.Role).ToList();
         }
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
@@ -63,6 +63,16 @@ namespace BogeyGolfersWeb.Controllers
                 return BadRequest("Invalid Values entered for User");
             }
             return Ok(user);
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            if(User == null || id < 1)
+            {
+                return NotFound();
+            }
+            await _context.Users.Where(u => u.Id == id).ExecuteDeleteAsync();
+            return Ok();
         }
     }
 }
